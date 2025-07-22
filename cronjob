@@ -1,1 +1,1 @@
-*/15 * * * * root cd /app && python trmnl_agenda/main.py >> /var/log/cron/cron.log 2>&1
+*/15 * * * * root cd /app && /app/.venv/bin/python trmnl_agenda/main.py >> /var/log/cron/cron.log 2>&1
