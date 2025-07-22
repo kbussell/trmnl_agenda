@@ -14,7 +14,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("main.calendar")
 
 CLIENT_SECRET_FILENAME = "oauth_client_secret.json"
 TOKEN_FILENAME = "google_auth_token.json"
@@ -105,7 +105,7 @@ def get_api_events(settings, days=14):
         events = sorted(events, key=cmp_to_key(compare_events))
 
     except HttpError as error:
-        print(f"An error occurred: {error}")
+        logger.error(f"An error occurred authenticating to Google: %s", error)
         return {}
 
     agenda = defaultdict(list)
@@ -149,7 +149,6 @@ def get_agenda(settings, max_age=600, force=False):
         expired = modified_ago > max_age
 
     if cached_data is None or force or expired:
-        logger.info("Calling calendar api")
         data = get_api_events(settings)
     else:
         data = cached_data
@@ -158,6 +157,8 @@ def get_agenda(settings, max_age=600, force=False):
     if data_changed:
         with open(cache_file, "w") as f:
             json.dump(data, f, indent=2)
+
+    logger.info("Called Google Calendar api. data_changed=%s", data_changed)
 
     return data, data_changed
 

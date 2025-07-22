@@ -4,7 +4,7 @@ import os
 import time
 from pathlib import Path
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("main.weather")
 
 
 class BaseWeatherProvider:
@@ -26,7 +26,6 @@ class BaseWeatherProvider:
             expired = modified_ago > max_age
 
         if cached_data is None or force or expired:
-            logger.info("%s: Calling weather api", self.__class__.__name__)
             data = self.get_weather_api_data()
         else:
             data = cached_data
@@ -35,6 +34,8 @@ class BaseWeatherProvider:
         if data_changed:
             with open(cache_file, "w") as f:
                 json.dump(data, f, indent=2)
+
+        logger.info("%s: Called weather api. data_changed=%s", self.__class__.__name__, data_changed)
 
         return self.format_data(data), data_changed
 

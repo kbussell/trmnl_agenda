@@ -1,7 +1,9 @@
 import argparse
 import logging
 import os
+import sys
 from datetime import date, datetime, timedelta
+from logging import config
 
 import requests
 import settings
@@ -9,9 +11,36 @@ import yaml
 from google_calendar import get_agenda
 from weather import get_weather_data
 
-logging.basicConfig(level=logging.INFO)
+logging_config = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s %(levelname)s %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+            'class': 'logging.Formatter',
+        }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard',
+            'stream': sys.stdout,
+            'level': 'INFO',
+        }
+    },
+    'loggers': {
+        "main": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False
+        }
+    }
+}
 
-logger = logging.getLogger(__name__)
+config.dictConfig(logging_config)
+
+logger = logging.getLogger("main")
 
 SKIP_EVENTS = ["Hold: grain", "Patch"]
 
@@ -126,6 +155,8 @@ def render_termnlp_yaml(data):
     with open(os.path.join(base_dir, "TRMNL/.trmnlp.yml"), "w") as f:
         yaml.dump(output, f)
 
+    logger.info(".trmnlp.yml updated")
+
 
 def main():
     parser = argparse.ArgumentParser(description="Create a css file of weather icons")
@@ -134,15 +165,14 @@ def main():
     parser.add_argument("--live", action="store_true", help="Live mode. Call TRMNL webhook")
     args = parser.parse_args()
 
-    logger.info("Getting agenda payload...")
+    logger.info("Starting update process...")
     data, data_changed = get_payload(args.max_age, args.force)
     if data_changed or args.force:
         if args.live:
             post_to_trmnl(data)
         else:
             render_termnlp_yaml(data)
-    if not data_changed:
-        logger.info("Data hasn't changed. Exiting.")
+    logger.info("Done")
 
 
 if __name__ == "__main__":
