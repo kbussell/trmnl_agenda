@@ -7,6 +7,7 @@ from collections import defaultdict
 from functools import cmp_to_key
 from pathlib import Path
 
+import settings
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -15,8 +16,8 @@ from googleapiclient.errors import HttpError
 
 logger = logging.getLogger(__name__)
 
-# If modifying these scopes, delete the file token.json.
-SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
+CLIENT_SECRET_FILENAME = "oauth_client_secret.json"
+TOKEN_FILENAME = "google_auth_token.json"
 
 
 def authenticate():
@@ -24,17 +25,21 @@ def authenticate():
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    if os.path.exists("token.json"):
-        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+    token_filename = settings.DATA_DIR / TOKEN_FILENAME
+    client_secret_filename = settings.DATA_DIR / CLIENT_SECRET_FILENAME
+    scopes = ["https://www.googleapis.com/auth/calendar.readonly"]
+
+    if os.path.exists(token_filename):
+        creds = Credentials.from_authorized_user_file(token_filename, scopes)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file(client_secret_filename, scopes)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open("token.json", "w") as token:
+        with open(token_filename, "w") as token:
             token.write(creds.to_json())
 
     return creds
@@ -144,7 +149,7 @@ def get_agenda(settings, max_age=600, force=False):
         expired = modified_ago > max_age
 
     if cached_data is None or force or expired:
-        logging.debug("Calling calendar api")
+        logger.info("Calling calendar api")
         data = get_api_events(settings)
     else:
         data = cached_data
@@ -155,3 +160,16 @@ def get_agenda(settings, max_age=600, force=False):
             json.dump(data, f, indent=2)
 
     return data, data_changed
+
+
+def main():
+    creds = authenticate()
+    if creds is None:
+        print("Authentication failed. Try again.")
+        exit(1)
+
+    print("Authentication successful")
+
+
+if __name__ == "__main__":
+    main()

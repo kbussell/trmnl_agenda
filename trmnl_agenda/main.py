@@ -88,12 +88,12 @@ def get_payload(max_age=600, force=False):
 
 
 def post_to_trmnl(data):
-    if not settings.WEBHOOK_URL:
-        raise ValueError("WEBHOOK_URL not set")
+    if not settings.TRMNL_WEBHOOK_URL:
+        raise ValueError("TRMNL_WEBHOOK_URL not set")
 
     logger.info("Calling TRMNL webhook")
     response = requests.post(
-        settings.WEBHOOK_URL,
+        settings.TRMNL_WEBHOOK_URL,
         json={
             "merge_variables": data,
         },
@@ -134,11 +134,15 @@ def main():
     parser.add_argument("--live", action="store_true", help="Live mode. Call TRMNL webhook")
     args = parser.parse_args()
 
+    logger.info("Getting agenda payload...")
     data, data_changed = get_payload(args.max_age, args.force)
-    if args.live:
-        post_to_trmnl(data)
-    else:
-        render_termnlp_yaml(data)
+    if data_changed or args.force:
+        if args.live:
+            post_to_trmnl(data)
+        else:
+            render_termnlp_yaml(data)
+    if not data_changed:
+        logger.info("Data hasn't changed. Exiting.")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,9 @@
+from pathlib import Path
+
 from decouple import Csv, config
 
-GOOGLE_CALENDAR_CLIENT_ID = config("GOOGLE_CALENDAR_CLIENT_ID")
-GOOGLE_CALENDAR_CLIENT_SECRET = config("GOOGLE_CALENDAR_CLIENT_SECRET")
+DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+
 GOOGLE_CALENDAR_IDS = config("GOOGLE_CALENDAR_IDS", cast=Csv(str), default=[])
 SKIP_EVENTS = config("SKIP_EVENTS", cast=Csv(str), default=[])
 
@@ -13,4 +15,4 @@ WEATHER_UNITS = config("WEATHER_UNITS", default="imperial")
 LAT = config("LAT")
 LON = config("LON")
 
-WEBHOOK_URL = config("WEBHOOK_URL")
+TRMNL_WEBHOOK_URL = config("TRMNL_WEBHOOK_URL")

@@ -14,3 +14,6 @@ run = "cd TRMNL; docker run -it -v '.:/plugin' trmnl/trmnlp trmnlp login"
 
 [tasks.push]
 run = "cd TRMNL; docker run -v '.:/plugin' trmnl/trmnlp trmnlp push"
+
+[tasks.google_auth]
+run = "python trmnl_agenda/google_calendar.py"

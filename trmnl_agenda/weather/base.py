@@ -26,7 +26,7 @@ class BaseWeatherProvider:
             expired = modified_ago < max_age
 
         if cached_data is None or force or expired:
-            logger.debug("%s: Calling weather api", self.__class__.__name__)
+            logger.info("%s: Calling weather api", self.__class__.__name__)
             data = self.get_weather_api_data()
         else:
             data = cached_data

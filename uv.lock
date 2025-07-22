@@ -357,6 +357,7 @@ dependencies = [
     { name = "google-auth-httplib2" },
     { name = "google-auth-oauthlib" },
     { name = "python-decouple" },
+    { name = "pyyaml" },
     { name = "requests" },
 ]
 
@@ -371,6 +372,7 @@ requires-dist = [
     { name = "google-auth-httplib2", specifier = "==0.2.0" },
     { name = "google-auth-oauthlib", specifier = "==1.2.2" },
     { name = "python-decouple", specifier = "==3.8" },
+    { name = "pyyaml", specifier = "<7" },
     { name = "requests", specifier = "<3" },
 ]
 

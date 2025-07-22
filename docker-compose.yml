@@ -1,0 +1,16 @@
+services:
+  trmnl-agenda:
+    build: .
+    container_name: trmnl-agenda
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+      - ./logs:/var/log/cron
+#    environment:
+#      - WEATHER_PROVIDER=openweathermap
+#      - OPENWEATHER_API_KEY
+#      - TOMORROW_IO_API_KEY
+#      - LAT
+#      - LON
+#      - SKIP_EVENTS
+#      - TRMNL_WEBHOOK_URL
