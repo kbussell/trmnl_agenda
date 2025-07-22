@@ -1,0 +1,45 @@
+<div class="layout">
+  <table class="table">
+    <tbody>
+    {% for row in days limit:days_half %}
+      <tr class="h--10"{% if row.skip %} style="border-top: 2px solid;"{% endif %}>
+        <td class="w--20"><span class="value value--xxsmall">{{ row.day }} {{ row.date }}</span></td>
+        {% if row.weather %}
+          <td class="w--12">
+            <div class="icon {{ row.weather.img }}"></div>
+          </td>
+          <td class="w--20">
+            <p>
+              {{ row.weather.temp_high }} / {{ row.weather.temp_low }}
+            </p>
+            {% if row.weather.snow %}
+              <div>
+                <div class="icon-mini snowflake-16"></div> {{ row.weather.snow }}
+              </div>
+              {% elsif row.weather.rain %}
+              <div>
+                <div class="icon-mini raindrop-16"></div> {{ row.weather.rain }}
+              </div>
+            {% endif %}
+          </td>
+        {% else %}
+          <td></td>
+          <td></td>
+        {% endif %}
+        <td>
+          {% if row.events %}
+            <ul style="list-style: none;">
+              {% for cal in row.events limit:2 %}
+                <li><span class="clamp--1">{{ cal[0] }} {{ cal[1] }}</span></li>
+              {% endfor %}
+              {% if row.extra1 %}
+                <li>{{ row.extra1 }}</li>
+              {% endif %}
+            </ul>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>

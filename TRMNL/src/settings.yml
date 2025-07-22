@@ -1,0 +1,24 @@
+---
+strategy: webhook
+no_screen_padding: 'yes'
+dark_mode: 'no'
+static_data: ''
+polling_verb: get
+polling_url: ''
+polling_headers: ''
+id: 0
+custom_fields:
+- keyname: bio
+  name: About This Plugin
+  field_type: author_bio
+  description: TRMNL Agenda - weather and calendar info for the next week(ish)
+  github_url: https://github.com/kbussell/trmnl_agenda
+  learn_more_url: https://github.com/kbussell/trmnl_agenda
+  email_address: kbussell@gmail.com
+- keyname: webhook_url
+  field_type: copyable_webhook_url
+  name: Webhook URL
+  description: Set `TRMNL_WEBHOOK_URL` to this in your .env file.
+  help_text: 'TBD '
+name: Agenda
+refresh_interval: 15

@@ -1,0 +1,16 @@
+[settings]
+python.uv_venv_auto = true
+
+[tools]
+ruff = "latest"
+python = "3.13"
+uv = "latest"
+
+[tasks.serve]
+run = "cd TRMNL; docker run -p 4567:4567 -v '.:/plugin' trmnl/trmnlp serve"
+
+[tasks.login]
+run = "cd TRMNL; docker run -it -v '.:/plugin' trmnl/trmnlp trmnlp login"
+
+[tasks.push]
+run = "cd TRMNL; docker run -v '.:/plugin' trmnl/trmnlp trmnlp push"
