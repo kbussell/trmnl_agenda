@@ -1,5 +1,7 @@
 # TRMNL Agenda Plugin
 
+This [TRMNL](https://usetrmnl.com/) plugin combines local weather forecast and calendar event data into a simple view.
+
 ## Prerequisites
 
 ### Tools
@@ -24,7 +26,7 @@ For this, you'll need a Google Cloud account.
   * And complete the authentication flow with your browser
   * You should now have a `google_auth_token.json` file in `data/`
 
-# API key for weather forecast provider
+### API key for weather forecast provider
 
 This plugin supports [OpenWeather](https://openweathermap.org/) and [tomorrow.io](https://www.tomorrow.io/). (I started
 with tomorrow.io, but their free plan only has daily forecasts for the next 5 days, so I switched to using OpenWeather.)
