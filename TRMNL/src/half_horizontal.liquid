@@ -3,22 +3,22 @@
     <tbody>
       {% for row in days limit:days_half %}
       <tr class="h--10"{% if row.skip %} style="border-top: 2px solid;"{% endif %}>
-        <td class="w--20"><span class="value value--xxsmall">{{ row.day }} {{ row.date }}</span></td>
-        {% if row.weather %}
+        <td class="w--20"><span class="value value--xxsmall">{{ row.d }}</span></td>
+        {% if row.w %}
           <td class="w--12">
-            <div class="icon {{ row.weather.img }}"></div>
+            <div class="icon {{ row.w.img }}"></div>
           </td>
           <td class="w--20">
             <p>
-              {{ row.weather.temp_high }} / {{ row.weather.temp_low }}
+              {{ row.w.h }} / {{ row.w.l }}
             </p>
-            {% if row.weather.snow %}
+            {% if row.w.snow %}
             <div>
-              <div class="icon-mini snowflake-16"></div> {{ row.weather.snow }}
+              <div class="icon-mini snowflake-16"></div> {{ row.w.snow }}
             </div>
-            {% elsif row.weather.rain %}
+            {% elsif row.w.rain %}
             <div>
-              <div class="icon-mini raindrop-16"></div> {{ row.weather.rain }}
+              <div class="icon-mini raindrop-16"></div> {{ row.w.rain }}
             </div>
             {% endif %}
           </td>
@@ -26,23 +26,23 @@
           <td></td>
           <td></td>
         {% endif %}
-        <td{% if row.events.size <= 3 %} colspan="2"{% endif %}>
-          {% if row.events %}
+        <td{% if row.e.size <= 3 %} colspan="2"{% endif %}>
+          {% if row.e %}
           <ul style="list-style: none;">
-            {% for cal in row.events limit:3 %}
+            {% for cal in row.e limit:3 %}
             <li><span class="clamp--1">{{ cal[0] }} {{ cal[1] }}</span></li>
             {% endfor %}
           </ul>
           {% endif %}
         </td>
         <td>
-          {% if row.events and row.events.size > 3 %}
+          {% if row.e and row.e.size > 3 %}
           <ul style="list-style: none;">
-            {% for cal in row.events offset:3 limit:2 %}
+            {% for cal in row.e offset:3 limit:2 %}
             <li><span class="clamp--1">{{ cal[0] }} {{ cal[1] }}</span></li>
             {% endfor %}
-            {% if row.extra2 %}
-            <li>{{ row.extra2 }}</li>
+            {% if row.x2 %}
+            <li>{{ row.x2 }}</li>
             {% endif %}
           </ul>
           {% endif %}
