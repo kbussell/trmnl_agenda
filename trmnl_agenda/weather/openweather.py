@@ -80,25 +80,14 @@ class OpenWeatherMapProvider(BaseWeatherProvider):
             day_date = datetime.fromtimestamp(day["dt"]).date().isoformat()
             weather_code = str(day["weather"][0]["id"])
 
-            convert_to_inches = self.settings.WEATHER_UNITS == "imperial"
-
-            rain = day.get("rain", 0)
-            if convert_to_inches:
-                rain = round(rain * MM_TO_INCH, 2)
-
-
-            snow = day.get("snow", 0)
-            if convert_to_inches:
-                snow = round(snow * MM_TO_INCH, 2)
-
             record = {
                 "img": openweather_code_images.get(weather_code, ""),
                 "l": f"{round(day['temp']['min'])}°",
                 "h": f"{round(day['temp']['max'])}°",
             }
-            if snow > 0:
+            if (snow := day.get("snow", 0)) > 0:
                 record["snow"] = f'{snow}"'
-            elif rain > 0:
+            elif (rain := day.get("rain", 0)) > 0:
                 record["rain"] = f'{rain}"'
 
             weather[day_date] = record
