@@ -155,8 +155,8 @@ class TomorrowIOProvider(BaseWeatherProvider):
                 "img": tomorrow_io_weather_code_images.get(weather_code, ""),
                 "l": f"{round(values['temperatureMin'])}°",
                 "h": f"{round(values['temperatureMax'])}°",
-                "rain": rain,
-                "snow": snow,
+                "rain": rain or "",
+                "snow": snow or "",
             }
 
         return weather

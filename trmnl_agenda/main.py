@@ -95,8 +95,8 @@ def get_payload(max_age=600, force=False):
                     "e": events,
                     "w": weather,
                     "s": skip,
-                    "x1": extra_events(event_count - 2),
-                    "x2": extra_events(event_count - 5),
+                    "x1": extra_events(event_count - 2) or "",
+                    "x2": extra_events(event_count - 5) or "",
                 }
             )
             skip = False

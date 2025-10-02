@@ -97,8 +97,8 @@ class OpenWeatherMapProvider(BaseWeatherProvider):
                 "img": openweather_code_images.get(weather_code, ""),
                 "l": f"{round(day['temp']['min'])}°",
                 "h": f"{round(day['temp']['max'])}°",
-                "rain": rain,
-                "snow": snow,
+                "rain": rain or "",
+                "snow": snow or "",
             }
 
         return weather
