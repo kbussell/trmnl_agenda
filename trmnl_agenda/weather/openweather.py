@@ -86,19 +86,21 @@ class OpenWeatherMapProvider(BaseWeatherProvider):
             if convert_to_inches:
                 rain = round(rain * MM_TO_INCH, 2)
 
-            rain = f'{rain}"' if rain > 0 else None
 
             snow = day.get("snow", 0)
             if convert_to_inches:
                 snow = round(snow * MM_TO_INCH, 2)
-            snow = f'{snow}"' if snow > 0 else None
 
-            weather[day_date] = {
+            record = {
                 "img": openweather_code_images.get(weather_code, ""),
                 "l": f"{round(day['temp']['min'])}°",
                 "h": f"{round(day['temp']['max'])}°",
-                "rain": rain or "",
-                "snow": snow or "",
             }
+            if snow > 0:
+                record["snow"] = f'{snow}"'
+            elif rain > 0:
+                record["rain"] = f'{rain}"'
+
+            weather[day_date] = record
 
         return weather

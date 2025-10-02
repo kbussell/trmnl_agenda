@@ -89,16 +89,19 @@ def get_payload(max_age=600, force=False):
             if space_taken <= MAX_HEIGHT_FULL:
                 days_full += 1
 
-            days.append(
-                {
+            record = {
                     "d": f"{cur_date.strftime("%a")} {cur_date.month}/{cur_date.day}",
                     "e": events,
                     "w": weather,
-                    "s": skip,
-                    "x1": extra_events(event_count - 2) or "",
-                    "x2": extra_events(event_count - 5) or "",
                 }
-            )
+            if skip:
+                record["s"] = 1
+            if extra1 := extra_events(event_count - 2):
+                record["x1"] = extra1
+            if extra2 := extra_events(event_count - 5):
+                record["x2"] = extra2
+
+            days.append(record)
             skip = False
         else:
             skip = True
