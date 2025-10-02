@@ -91,13 +91,12 @@ def get_payload(max_age=600, force=False):
 
             days.append(
                 {
-                    "day": cur_date.strftime("%a"),
-                    "date": f"{cur_date.month}/{cur_date.day}",
-                    "events": events,
-                    "weather": weather,
-                    "skip": skip,
-                    "extra1": extra_events(event_count - 2),
-                    "extra2": extra_events(event_count - 5),
+                    "d": f"{cur_date.strftime("%a")} {cur_date.month}/{cur_date.day}",
+                    "e": events,
+                    "w": weather,
+                    "s": skip,
+                    "x1": extra_events(event_count - 2),
+                    "x2": extra_events(event_count - 5),
                 }
             )
             skip = False
