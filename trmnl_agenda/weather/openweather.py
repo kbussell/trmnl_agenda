@@ -85,9 +85,12 @@ class OpenWeatherMapProvider(BaseWeatherProvider):
                 "l": f"{round(day['temp']['min'])}°",
                 "h": f"{round(day['temp']['max'])}°",
             }
+            # Rain and snow are always returned in mm, regardless of units setting
             if (snow := day.get("snow", 0)) > 0:
+                snow = round(snow * MM_TO_INCH, 2)
                 record["snow"] = f'{snow}"'
             elif (rain := day.get("rain", 0)) > 0:
+                rain = round(rain * MM_TO_INCH, 2)
                 record["rain"] = f'{rain}"'
 
             weather[day_date] = record
